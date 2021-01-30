@@ -62,12 +62,20 @@ class Frog(Rectangle):
 		self.x += xdir * g_vars['grid']
 		self.y += ydir * g_vars['grid']
 
-	def attach(self, obstacle):	
+	def attach(self, obstacle):
 		self.attached = obstacle
 
 	def update(self):
 		if self.attached is not None:
-			self.x += self.attached.speed
+			#Modificado para movimiento discreto            
+			if abs(self.attached.ready) > 1 and self.attached.speed != 0:
+				if self.attached.speed > 0:
+					self.x += g_vars['grid']
+				else:
+					self.x -= g_vars['grid']
+				self.ready = 0
+            
+			#self.x += self.attached.speed
 
 		if self.x + self.w > g_vars['width']:
 			self.x = g_vars['width'] - self.w
@@ -93,7 +101,7 @@ class Obstacle(Rectangle):
 		self.ready=0
 
 	def update(self):
-        #Hecho por Ana
+        #Hecho por Ana para movimiento discreto
 		if abs(self.ready) > 1 and self.speed != 0:
 			if self.speed > 0:
 				self.x += g_vars['grid']
@@ -125,8 +133,8 @@ class Lane(Rectangle):
 		if self.type == 'log':
 			o_color = (185, 122, 87)
 		for i in range(n):
-			#Modificado
-			self.obstacles.append(Obstacle(offset + spc * i, y * g_vars['grid'], l * g_vars['grid'], g_vars['grid'], spd, o_colo	r, ready=0))
+			#Modificado para movimiento discreto
+			self.obstacles.append(Obstacle(offset + spc * i, y * g_vars['grid'], l * g_vars['grid'], g_vars['grid'], spd, o_color, ready=0))
 
 	def check(self, frog):
 		checked = False
