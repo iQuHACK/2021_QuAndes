@@ -1,4 +1,13 @@
 # Welcome to iQuHACK 2021!
+## Rafael Felipe Córdoba        email:rf.cordoba@uniandes.edu.co
+###
+## Luis Carlos Mantilla       email:
+###
+## Juan Pablo Acuña        email:
+## Ana Torres       email:
+###
+## Daniel Sabogal        email:
+###
 Check out some info in the [event's repository](https://github.com/iQuHACK/2021) to get started.
 
 Having a README in your team's repository facilitates judging. A good README contains:
