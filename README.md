@@ -1,13 +1,6 @@
 # Welcome to iQuHACK 2021!
-## Rafael Felipe Córdoba        email:rf.cordoba@uniandes.edu.co
-###
-## Luis Carlos Mantilla       email:
-###
-## Juan Pablo Acuña        email:
-## Ana Torres       email:
-###
-## Daniel Sabogal        email:
-###
+___
+##### Rafael Felipe Córdoba, Luis Carlos Mantilla, Juan Pablo Acuña, Ana Torres, Daniel Sabogal      
 Check out some info in the [event's repository](https://github.com/iQuHACK/2021) to get started.
 
 Having a README in your team's repository facilitates judging. A good README contains:
@@ -22,3 +15,25 @@ You can find a potential README template in [one of last year's projects](https:
 Feel free to contact the staff with questions over our [event's slack](https://iquhack.slack.com), or via iquhack@mit.edu.
 
 Good luck!
+____
+# Table of Contents
+1. [Abstract](#abstract)
+2. [Motivation](#motivation)
+3. [Introduction](#introduction)
+4. [References](#references)
+
+<!---
+4. [References](#fourth-examplehttpwwwfourthexamplecom)
+-->
+## Abstract
+___
+___
+## Motivation
+___
+___
+## Introduction
+___
+___
+## References
+___
+___
