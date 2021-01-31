@@ -14,7 +14,8 @@ import numpy as np
 from talos import *
 from actors2 import *
 
-
+duck_sound = pygame.mixer.Sound("duck.wav")
+frog_sound = pygame.mixer.Sound("frog.wav")
 g_vars = {}
 g_vars['width'] = 416
 g_vars['height'] = 416
@@ -47,9 +48,9 @@ class App:
         self.state = 'START'
         
         #Player's frog 
-        self.frog = Frog(g_vars['width']/2 - g_vars['grid']/2, 12 * g_vars['grid'], g_vars['grid'],(34, 177, 76))
+        self.frog = Frog(g_vars['width']/2 - g_vars['grid']/2, 12 * g_vars['grid'], g_vars['grid'],(34, 177, 76),duck_sound)
         #Bot's frog
-        self.frog2 = Frog(g_vars['width']/2 - g_vars['grid']/2 - 3*g_vars['grid'], 12* g_vars['grid'], g_vars['grid'],(255, 0, 0))
+        self.frog2 = Frog(g_vars['width']/2 - g_vars['grid']/2 - 3*g_vars['grid'], 12* g_vars['grid'], g_vars['grid'],(255, 0, 0),frog_sound)
         
         self.frog.attach(None)
         self.frog2.attach(None)
