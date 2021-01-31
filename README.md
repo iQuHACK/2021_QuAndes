@@ -1,5 +1,5 @@
 # Schrodinger's frog
-Rafael Felipe Córdoba, Luis Carlos Mantilla, Juan Pablo Acuña, Ana María Torres, Daniel Sabogal 
+Rafael Felipe Córdoba, Luis Carlos Mantilla, Juan Pablo Acuña, Ana María Torres, Daniel Sabogal.
 
 <!---
 Having a README in your team's repository facilitates judging. A good README contains:
