@@ -30,6 +30,7 @@ Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the mar
 * Our primary goal for this fantastic hackathon was to learn more about quantum computing since we did not have previous experience in the field. 
 * We wanted to collaborate as a team on a specific challenge and have the possibility of running algorithms on the IonQ hardware.
 * Have lots of fun programming and working this challenge out.
+
 **Technical goals**
 * Implement the QAOA circuit to solve a quadratic programming problem.
 * Implement gates to superpose qubits and use this to introduce an element of uncertainty in the game.
