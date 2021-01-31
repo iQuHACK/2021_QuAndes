@@ -13,7 +13,7 @@ from pygame.locals import *
 import numpy as np
 from talos import *
 from actors2 import *
-
+pygame.init()
 duck_sound = pygame.mixer.Sound("duck.wav")
 frog_sound = pygame.mixer.Sound("frog.wav")
 g_vars = {}
