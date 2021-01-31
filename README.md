@@ -8,7 +8,7 @@ Having a README in your team's repository facilitates judging. A good README con
 * the motivation/goals for your project,
 * a description of the work you did, and
 * proposals for future work.
--->
+
 <!---
 You can find a potential README template in [one of last year's projects](https://github.com/iQuHACK/QuhacMan).
 Feel free to contact the staff with questions over our [event's slack](https://iquhack.slack.com), or via iquhack@mit.edu.
@@ -18,11 +18,11 @@ Good luck!
 2. [Motivation](#motivation)
 3. [Introduction](#introduction)
 4. [References](#references)
--->
+
 <!---
 4. [References](#fourth-examplehttpwwwfourthexamplecom)
 -->
--->
+
 ## Introduction
 Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the marvellous game consisting of crossing a road without bumping into obstacles. We have implemented an improved version of the game on which frogs can explore the quantum realm and experience quantum effects such as superposition and tunnelling. Additionally, we have included a primitive AI bot that can play against the user. It decides its moves by minimizing a cost function that depends on its environment using the QAOA algorithm.   
 
@@ -36,9 +36,9 @@ Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the mar
 
 
 ## ToDo:
-*We want to improve the user interaction—for example, adding Talos as an optional bot and allowing different difficulties. 
-*Find better cost functions that improve the skills of Talos.
-*Change graphical aspects of the game
+* We want to improve the user interaction—for example, adding Talos as an optional bot and allowing different difficulties. 
+* Find better cost functions that improve the skills of Talos.
+* Change graphical aspects of the game
 
 
 
