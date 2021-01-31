@@ -29,6 +29,7 @@ Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the mar
 ## Motivation
 
 ## Description
+In this game, you will be playing as a frog agaings a primitive AI bot. Your goal is to advance through the map advoiding cars that may crash you and staying on the logs when you are surrounded by water. You will win points as you go up in the map and you will lose all your points and go back to the end when your frogg crashes a car or goes into the water. However, there are 
 
 ### Elements and rules
 * Map: This is the place where frogs and qubits coexist.  It contains cars that you must avoid at all costs!
