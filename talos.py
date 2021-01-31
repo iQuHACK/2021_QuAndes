@@ -114,6 +114,6 @@ class QAOA_BOT:
         qp = QuadraticProgram()
         qp.from_docplex(mdl)
         qaoa_result = qaoa.solve(qp)
-        return qaoa_result.variables_dict
+        return max(qaoa_result.variables_dict, key=qaoa_result.variables_dict.get)
 
 
