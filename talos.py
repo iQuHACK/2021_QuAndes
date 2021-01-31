@@ -14,6 +14,30 @@ qaoa = MinimumEigenOptimizer(QAOA(quantum_instance=BasicAer.get_backend('qasm_si
 exact = MinimumEigenOptimizer(NumPyMinimumEigensolver())
 
 class QAOA_BOT:
+    """"
+    This class represents the Bot Talos that controls the red frog.
+    Attributes:
+        direcciones: list
+        It is the direction of cars per lane. E.g. ['left', 'right', 'none'] would specify that
+        the red frog is on the road with vehicles moving to the right, above cars are moving to 
+        the left and under there is bare grass.
+        
+        vision:  3x3 np.array
+        These are the neighbouring blocks against the red frog, the middle of such array has value
+        2. e.g. np.array([[1,1,0], [0,2,1],[0,0,0]]) would mean that above to the left of the frog
+        there is a car. Also, there is a car to the right of the frog and nothing under it.
+        
+        malos: dict
+        dictionary with rewards for bad movement.
+
+        buenos: dict
+        dictionary with rewards for good movements.
+
+        Methods:
+        movimiento()
+        Outputs the movement that the bot takes.
+    
+    """"
     def __init__(self, direcciones, vision):
         self.direcciones = direcciones
         self.vision = vision
