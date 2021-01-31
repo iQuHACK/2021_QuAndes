@@ -77,12 +77,12 @@ class Lane(Rectangle):
 
 class Frog(Rectangle):
 
-	def __init__(self, x, y, w, c,so):
+	def __init__(self, x, y, w, c):
 		super(Frog, self).__init__(x, y, w, w)
 		self.x0 = x
 		self.y0 = y
 		self.color = c
-		self.sound = so
+		#self.sound = so
 		self.attached = None
 		self.qc = QuantumCircuit(2,2)  
 		self.state = '00'
@@ -107,7 +107,8 @@ class Frog(Rectangle):
 		self.xdir = xdir
 		self.ydir = ydir
         # Daniel sound
-		sound(self.sound)
+		#sound(self.sound)
+		duck()
     #Daniel return
 	def devolver(self):
 		self.x -= self.xdir * g_vars['grid']
