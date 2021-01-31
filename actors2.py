@@ -32,6 +32,8 @@ def duck():
 
 
 #ACTORS
+
+#general class for the game objects
 class Rectangle:
 
 	def __init__(self, x, y, w, h):
@@ -53,7 +55,7 @@ class Rectangle:
 
 		return not (left >= oright or right <= oleft or top >= obottom or bottom <= otop)
 
-
+#Class for every lane in the game
 class Lane(Rectangle):
 
 	def __init__(self, y, c=None, n=0, l=0, spc=0, spd=0):
@@ -74,7 +76,7 @@ class Lane(Rectangle):
 		for i in range(n):
 			self.obstacles.append(Obstacle(offset + spc * i, y * g_vars['grid'], l * g_vars['grid'], g_vars['grid'], spd, o_color, ready=0))
 
-
+#Class for the frog 
 class Frog(Rectangle):
 
 	def __init__(self, x, y, w, c):
@@ -86,7 +88,7 @@ class Frog(Rectangle):
 		self.qc = QuantumCircuit(2,2)  
 		self.state = '00'
 		self.powup = None
-
+#Reset the frog to the initial status and state
 	def reset(self):
 		print("Reset")
 		self.x = self.x0
@@ -95,7 +97,7 @@ class Frog(Rectangle):
 		self.qc = QuantumCircuit(2,2)
 		self.state = '00'
 		self.powup = None 
-
+#Move the frog
 	def move(self, xdir, ydir):
 		self.x += xdir * g_vars['grid']
 		self.y += ydir * g_vars['grid']
@@ -113,10 +115,10 @@ class Frog(Rectangle):
 	def tunnel(self):
 		self.x += self.xdir * g_vars['grid']
 		self.y += self.ydir * g_vars['grid']
-
+#Attach a frog to some obstacle in the lane
 	def attach(self, obstacle):
 		self.attached = obstacle
-
+#Movement for the obstacles, discrete movement
 	def update(self):
 		if self.attached is not None:
 			#Modificado para movimiento discreto            
@@ -193,7 +195,7 @@ class Frog(Rectangle):
 		self.qc = QuantumCircuit(2,2)
 		self.powup = None
             
-
+#Class for the obstacles of the game
 class Obstacle(Rectangle):
 
 	def __init__(self, x, y, w, h, s, c, ready):
@@ -249,6 +251,8 @@ class Lane(Rectangle):
 		frog.attach(None)
 		for obstacle in self.obstacles:
             
+            
+#actions for the differenet obsatxcles in the game          
 			if frog.intersects(obstacle):
 				crash()
                 #Se estrella con carro o cae al agua
