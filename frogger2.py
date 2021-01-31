@@ -22,7 +22,7 @@ g_vars['fps'] = 30
 g_vars['grid'] = 32
 g_vars['window'] = pygame.display.set_mode( [g_vars['width'], g_vars['height']], pygame.HWSURFACE)
 
-matrix = [[0,0,0], [0,0,0], [0,0,0]]
+matrix = np.array([[0,0,0], [0,0,0], [0,0,0]])
 
 class App:
 
@@ -36,7 +36,7 @@ class App:
         self.score = None
         self.lanes = None
         self.bot= None
-        self.movimiento
+        self.movimiento = None
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont('Courier New', 16)
 
@@ -241,7 +241,7 @@ class App:
             for event in pygame.event.get():
                 self.event( event )
             self.fillmatrix()
-            self.bot=QAOA_BOT(['left','right',None],matrix)
+            self.bot=QAOA_BOT(['left','right','none'],matrix)
             self.movimiento=self.bot.movimiento()
             self.event2(self.movimiento)
             self.update()

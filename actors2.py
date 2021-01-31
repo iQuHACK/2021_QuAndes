@@ -3,6 +3,7 @@
 import random
 import pygame
 import numpy as np
+import time
 import qiskit
 from qiskit import *
 from pygame.locals import *
@@ -11,6 +12,14 @@ from frogger2 import *
 from qiskit import Aer
 from qiskit_ionq_provider import IonQProvider 
 from qiskit.providers.jobstatus import JobStatus
+
+
+#SOUND
+pygame.init()
+crash_sound = pygame.mixer.Sound("crash.wav")
+def crash():
+    pygame.mixer.Sound.play(crash_sound)
+    pygame.mixer.music.stop()
 
 
 
@@ -85,7 +94,8 @@ class Frog(Rectangle):
         # Daniel saves direction
 		self.xdir = xdir
 		self.ydir = ydir
-        
+        # Daniel sound
+		crash()
     #Daniel return
 	def devolver(self):
 		self.x -= self.xdir * g_vars['grid']
