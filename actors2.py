@@ -254,19 +254,18 @@ class Lane(Rectangle):
                 #Se estrella con carro o cae al agua
 				if self.type == 'car':
 					if frog.powup!=None:
-						print("Estrella carro. powup: "+frog.powup)                   #PRINTTT
 						if frog.powup=='superpos':
 							frog.measure_circuit('superpos')
-							print("Estado antes de verificar "+frog.state)
 							if frog.state=='11' or frog.state=='01':
                                 #Se devuelve a donde estaba antes
-								print("Estrella carro. Se devuelve estado: "+frog.state)           #PRINTTT
+								print("Crashes car. Succesfully survives by superposition!")
 								frog.devolver()
 								frog.qc = QuantumCircuit(2,2)
 						elif frog.powup=='tunnel':
 							frog.measure_circuit('tunnel')
 							if frog.state=='11' or frog.state=='01':
                                 #Atraviesa el obstaculo
+								print("Crashes car. Succesfully survives by tunneling!")
 								print(frog.state)
 								frog.tunnel()
 								frog.qc = QuantumCircuit(2,2)
@@ -281,9 +280,7 @@ class Lane(Rectangle):
                     
                 #Puertas cuánticas
 				if self.type == 'superpos':
-					print("Coje la puerta "+self.type)           #PRINTT
 					frog.update_circuit('superpos')
-					frog.qc.draw()                              #PRINTTT
 				if self.type == 'tunnel':
 					frog.update_circuit('tunnel')
                     
@@ -292,7 +289,7 @@ class Lane(Rectangle):
 				frog.measure_circuit('superpos')
 				if frog.state=='11' or frog.state=='01':
                        #Se devuelve a donde estaba antes
-					print(frog.state)
+					print("Goes into water. Succesfully survives by superposition!")
 					frog.devolver()
 					frog.qc = QuantumCircuit(2,2)
 			else:
