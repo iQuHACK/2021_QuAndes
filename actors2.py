@@ -20,7 +20,15 @@ crash_sound = pygame.mixer.Sound("crash.wav")
 def crash():
     pygame.mixer.Sound.play(crash_sound)
     pygame.mixer.music.stop()
-
+	
+tin_sound = pygame.mixer.Sound("tin.wav")
+def tin():
+	pygame.mixer.Sound.play(tin_sound)
+	pygame.mixer.music.stop()
+duck_sound = pygame.mixer.Sound("duck.wav")
+def duck():
+	pygame.mixer.Sound.play(duck_sound)
+	pygame.mixer.music.stop()
 
 
 #ACTORS
@@ -95,7 +103,7 @@ class Frog(Rectangle):
 		self.xdir = xdir
 		self.ydir = ydir
         # Daniel sound
-		crash()
+		duck()
     #Daniel return
 	def devolver(self):
 		self.x -= self.xdir * g_vars['grid']
@@ -140,9 +148,11 @@ class Frog(Rectangle):
 		if type == 'superpos' and self.powup!= 'superpos':
 			self.powup = 'superpos'         
 			self.qc.h(0)
+			tin()
 		elif type == 'tunnel' and self.powup!= 'tunnel':
 			self.powup = 'tunnel'
 			self.qc.h(1)
+			tin()
 		#self.qc.draw()
             
     #Measure circuit
@@ -240,6 +250,7 @@ class Lane(Rectangle):
 		for obstacle in self.obstacles:
             
 			if frog.intersects(obstacle):
+				crash()
                 #Se estrella con carro o cae al agua
 				if self.type == 'car':
 					if frog.powup!=None:
