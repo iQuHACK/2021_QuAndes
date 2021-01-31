@@ -26,6 +26,11 @@ Good luck!
 ## Introduction
 Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the marvellous game consisting of crossing a road without bumping into obstacles. We have implemented an improved version of the game on which frogs can explore the quantum realm and experience quantum effects such as superposition and tunnelling. Additionally, we have included a primitive AI bot that can play against the user. It decides its moves by minimizing a cost function that depends on its environment using the QAOA algorithm.
 
+## Motivation
+
+## Description 
+In this game, you will be playing as a frog agaings a primitive AI bot. Your goal is to advance through the map advoiding cars that may crash you and staying on the logs when you are surrounded by water. You will win points as you go up in the map and you will lose all your points and go back to the end when your frogg crashes a car or goes into the water. However, there are
+
 ## Elements and rules
 * **Map**: This is the place where frogs and qubits coexist.  It contains cars that you must avoid at all costs!
 * **Cars**: They move to one side or the other discretely and are shown as dark grey pixels.
