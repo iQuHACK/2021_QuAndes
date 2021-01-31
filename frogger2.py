@@ -10,14 +10,14 @@ import random
 
 import pygame
 from pygame.locals import *
-
+import numpy as np
 from actors2 import *
 
 
 g_vars = {}
 g_vars['width'] = 416
 g_vars['height'] = 416
-g_vars['fps'] = 5
+g_vars['fps'] = 20
 g_vars['grid'] = 32
 g_vars['window'] = pygame.display.set_mode( [g_vars['width'], g_vars['height']], pygame.HWSURFACE)
 
@@ -48,16 +48,16 @@ class App:
 
         self.lanes = []
         self.lanes.append( Lane( 1, c=( 50, 192, 122) ) )
-        self.lanes.append( Lane( 2, t='log', c=(153, 217, 234), n=2, l=6, spc=350, spd=0.03) )
-        self.lanes.append( Lane( 3, t='log', c=(153, 217, 234), n=3, l=2, spc=180, spd=-0.04) )
-        self.lanes.append( Lane( 4, t='log', c=(153, 217, 234), n=4, l=2, spc=140, spd=0.05) )
-        self.lanes.append( Lane( 5, t='log', c=(153, 217, 234), n=2, l=3, spc=230, spd=-0.02) )
+        self.lanes.append( Lane( 2, t='log', c=(153, 217, 234), n=2, l=6, spc=350, spd=0.015) )
+        self.lanes.append( Lane( 3, t='log', c=(153, 217, 234), n=3, l=2, spc=180, spd=-0.02) )
+        self.lanes.append( Lane( 4, t='log', c=(153, 217, 234), n=4, l=2, spc=140, spd=0.025) )
+        self.lanes.append( Lane( 5, t='log', c=(153, 217, 234), n=2, l=3, spc=230, spd=-0.01) )
         self.lanes.append( Lane( 6, c=(50, 192, 122) ) )
         self.lanes.append( Lane( 7, c=(50, 192, 122) ) )
-        self.lanes.append( Lane( 8, t='car', c=(195, 195, 195), n=3, l=2, spc=180, spd=-0.02) )
-        self.lanes.append( Lane( 9, t='car', c=(195, 195, 195), n=2, l=4, spc=240, spd=-0.04) )
-        self.lanes.append( Lane( 10, t='car', c=(195, 195, 195), n=4, l=2, spc=130, spd=0.03) )
-        self.lanes.append( Lane( 11, t='car', c=(195, 195, 195), n=3, l=3, spc=200, spd=0.05) )
+        self.lanes.append( Lane( 8, t='car', c=(195, 195, 195), n=3, l=2, spc=180, spd=-0.01) )
+        self.lanes.append( Lane( 9, t='car', c=(195, 195, 195), n=2, l=4, spc=240, spd=-0.02) )
+        self.lanes.append( Lane( 10, t='car', c=(195, 195, 195), n=4, l=2, spc=130, spd=0.015) )
+        self.lanes.append( Lane( 11, t='car', c=(195, 195, 195), n=3, l=3, spc=200, spd=0.025) )
         self.lanes.append( Lane( 12, c=(50, 192, 122) ) )
 
     def event(self, event):
@@ -90,33 +90,7 @@ class App:
         if self.lanes[lane_index].check(self.frog):
             self.score.lives -= 1
             self.score.score = 0
-        #Fill matrix	
-        pos = [-1,0,1]
-        
-        matrix=[[0,0,0], [0,0,0], [0,0,0]]
-        
-        for j in pos:
-            for i in pos:
-                left = self.frog.x+i*32+j*32
-                right = self.frog.x+self.frog.w+i*32+j*32
-                top = self.frog.y+j*32+i*32
-                bottom = self.frog.y +self.frog.h+j*32+i*32
-                print(left,right,top,bottom)
-                print(self.frog.x,self.frog.y)
-                lane_index = (top// g_vars['grid'] - 1 ) %12
-                
-                for obstacle in self.lanes[lane_index].obstacles:
-                    oleft=obstacle.x
-                    oright=obstacle.x+obstacle.w
-                    otop=obstacle.y
-                    obottom=obstacle.h+obstacle.y
-                    #if (left >= oright or right <= oleft or top <= obottom or bottom >= otop):
-                    if (left <= oright) : 
-                        matrix[j+1][i+1] = 1
-                    else:
-                        matrix[j+1][i+1]=0
-        print(matrix)
-            
+     
         
         self.frog.update()
 
@@ -166,15 +140,62 @@ class App:
         pygame.quit()
         quit()
 
+    def fillmatrix(self):
+        #Fill 	
+        global matrix
+        pos = [-1,0,1]
+        
+        
+        for j in pos:
+            for i in pos:
+                left = self.frog.x+i*32
+                right = self.frog.x+self.frog.w+i*32
+                top = self.frog.y-j*32
+                bottom = self.frog.y +self.frog.h-j*32
+                lane_index = top// g_vars['grid'] - 1
+                if  lane_index !=12 and lane_index!=-1 and lane_index !=0 and lane_index !=1:
+                    if self.lanes[lane_index].obstacles ==[]:
+                        matrix[j+1][i+1]=0
+                    else:
+                        for obstacle in self.lanes[lane_index].obstacles:
+                            oleft=obstacle.x
+                            oright=obstacle.x+obstacle.w
+                            otop=obstacle.y
+                            obottom=obstacle.h+obstacle.y
+                            print(lane_index)
+                            if not (left >= oright or right <= oleft or top >= obottom or bottom <= otop):
+                                if self.lanes[lane_index].type == 'car':
+                                   
+                                    matrix[j+1][i+1] = 1
+                                if self.lanes[lane_index].type == 'log':
+                                    matrix[j+1][i+1] = 0
+                            else:
+                                if self.lanes[lane_index].type == 'car':
+                                    matrix[j+1][i+1] = 0
+                                if self.lanes[lane_index].type == 'log':
+                                    matrix[j+1][i+1] = 1
+                        
+                else:
+                    matrix[j+1][i+1] = 0
+                        
+        var1=matrix[0]
+        matrix[0]=matrix[2]
+        matrix[2]=var1                   
+        print(" ____\n|{}{}{}|\n|{}{}{}|\n|{}{}{}|\n----".format(matrix[0][0],matrix[0][1],matrix[0][2],matrix[1][0],matrix[1][1],matrix[1][2],matrix[2][0],matrix[2][1],matrix[2][2]))
+            
+        
     def execute(self):
         if self.init() == False:
             self.running = False
         while self.running:
             for event in pygame.event.get():
                 self.event( event )
+                
             self.update()
+            self.fillmatrix()
             self.draw()
             self.clock.tick(g_vars['fps'])
+            self.fillmatrix()
         self.cleanup()
 
 
