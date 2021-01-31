@@ -36,9 +36,9 @@ Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the mar
 
 
 ## ToDo:
-*We want to improve the user interaction—for example, adding Talos as an optional bot and allowing different difficulties. 
-*Find better cost functions that improve the skills of Talos.
-*Change graphical aspects of the game
+* We want to improve the user interaction—for example, adding Talos as an optional bot and allowing different difficulties. 
+* Find better cost functions that improve the skills of Talos.
+* Change graphical aspects of the game
 
 
 
