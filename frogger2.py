@@ -40,10 +40,16 @@ class App:
 	def init(self):
 		self.running = True
 		self.state = 'START'
-		
-		self.frog = Frog(g_vars['width']/2 - g_vars['grid']/2, 12 * g_vars['grid'], g_vars['grid'])
+        
+        #Juan Pablo Frog 2
+		self.frog = Frog(g_vars['width']/2 - g_vars['grid']/2, 12 * g_vars['grid'], g_vars['grid'],(34, 177, 76))
+		self.frog2 = Frog(g_vars['width']/2 - g_vars['grid']/2 - 3*g_vars['grid'], 12* g_vars['grid'], g_vars['grid'],(255, 0, 0))
+        
 		self.frog.attach(None)
+		self.frog2.attach(None)
 		self.score = Score()
+		#Score for Frog 2
+		self.score2 = Score()
 
 		self.lanes = []
 		self.lanes.append( Lane( 1, c=( 50, 192, 122) ) )
@@ -51,8 +57,11 @@ class App:
 		self.lanes.append( Lane( 3, t='log', c=(153, 217, 234), n=3, l=2, spc=180, spd=-0.04) )
 		self.lanes.append( Lane( 4, t='log', c=(153, 217, 234), n=4, l=2, spc=140, spd=0.05) )
 		self.lanes.append( Lane( 5, t='log', c=(153, 217, 234), n=2, l=3, spc=230, spd=-0.02) )
-		self.lanes.append( Lane( 6, c=(50, 192, 122) ) )
-		self.lanes.append( Lane( 7, c=(50, 192, 122) ) )
+        #Juan Pablo power up and comment
+		self.lanes.append( Lane( 6, t='superpos', c=(50, 192, 122), n=1, l=1, spc=100, spd=1.5) )
+		#self.lanes.append( Lane( 6, c=(50, 192, 122) ) )
+		self.lanes.append( Lane( 7, t='tunnel', c=(50, 192, 122), n=1, l=1, spc=100, spd=-1.5) )
+		#self.lanes.append( Lane( 7, c=(50, 192, 122) ) )
 		self.lanes.append( Lane( 8, t='car', c=(195, 195, 195), n=3, l=2, spc=180, spd=-0.02) )
 		self.lanes.append( Lane( 9, t='car', c=(195, 195, 195), n=2, l=4, spc=240, spd=-0.04) )
 		self.lanes.append( Lane( 10, t='car', c=(195, 195, 195), n=4, l=2, spc=130, spd=0.03) )
@@ -79,17 +88,33 @@ class App:
 				self.frog.move(0, -1)
 			if event.type == KEYDOWN and event.key == K_DOWN:
 				self.frog.move(0, 1)
+            #Juan Pablo Frog 2 event
+			if event.type == KEYDOWN and event.key == ord('a'):
+				self.frog2.move(-1, 0)
+			if event.type == KEYDOWN and event.key == ord('d'):
+				self.frog2.move(1, 0)
+			if event.type == KEYDOWN and event.key == ord('w'):
+				self.frog2.move(0, -1)
+			if event.type == KEYDOWN and event.key == ord('s'):
+				self.frog2.move(0, 1)
 
 	def update(self):
 		for lane in self.lanes:
 			lane.update()
-		
+
 		lane_index = self.frog.y // g_vars['grid'] - 1
 		if self.lanes[lane_index].check(self.frog):
 			self.score.lives -= 1
 			self.score.score = 0
-		
+            
+        #Juan Pablo Frog 2
+		lane_index = self.frog2.y // g_vars['grid'] - 1
+		if self.lanes[lane_index].check(self.frog2):
+			self.score2.score = 0
+            
+        #Juan Pablo Frog 2
 		self.frog.update()
+		self.frog2.update()
 
 		if (g_vars['height']-self.frog.y)//g_vars['grid'] > self.score.high_lane:
 			if self.score.high_lane == 11:
@@ -98,6 +123,17 @@ class App:
 			else:
 				self.score.update(10)
 				self.score.high_lane = (g_vars['height']-self.frog.y)//g_vars['grid']
+                
+        #Juan Pablo update Frog 2 and restart player 2
+		if (g_vars['height']-self.frog2.y)//g_vars['grid'] > self.score2.high_lane:
+			if self.score2.high_lane == 11:
+				self.frog2.reset()
+				self.score2.update(200)
+			else:
+				self.score2.update(10)
+				self.score2.high_lane = (g_vars['height']-self.frog2.y)//g_vars['grid']
+
+
 
 		if self.score.lives == 0:
 			self.frog.reset()
@@ -115,11 +151,16 @@ class App:
 
 			self.draw_text("Lives: {0}".format(self.score.lives), 5, 8, 'left')
 			self.draw_text("Score: {0}".format(self.score.score), 120, 8, 'left')
-			self.draw_text("High Score: {0}".format(self.score.high_score), 240, 8, 'left')
+
+			self.draw_text("High Score: {0}".format(self.score.high_score), 240, 40, 'left')
+			self.draw_text("Score Talos: {0}".format(self.score2.score), 240, 8, 'rigth')
+
 
 			for lane in self.lanes:
 				lane.draw()
 			self.frog.draw()
+            #Juan Pablo Frog 2
+			self.frog2.draw()
 
 		pygame.display.flip()
 
