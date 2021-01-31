@@ -32,7 +32,7 @@ In this game, you will be playing as a frog agaings a primitive AI bot. Your goa
 ### Elements and rules
 * **Map**: This is the place where frogs and qubits coexist.  It contains cars that you must avoid at all costs and water in which you can drown!
 * **Cars**: They move to one side or the other discretely and are shown as dark grey pixels.
-* **Frog**: Represented by a dark green square, the frog you control can jump between the multiple highways and must reach the top of the map. Represented by a red square, the frog controlled by the bot can make the same movements as your frog.
+* **Frogs**: Represented by a dark green square, the frog you control can jump between the multiple highways and must reach the top of the map. Represented by a red square, the frog controlled by the bot can make the same movements as your frog.
 * **Talos**: In honour of the Greek myth of Talos, this is the name of your opponent. It is the red square (a venenous frog) that is competing against you for victory. It moves according to its neighbouring pixels.
 * **Superposition superpower**: Every quantum game must have a reference to Schrodinger's cat. In this game, the frog can replace the cat and increase its chances of surviving when crashing into a car or falling into the water. Its state will become |+>, and upon smashing into a vehicle (measuring on the computational basis), the frog could still live. This power is represented by a yellow square.  
 * **Tunnelling superpower**: You can use this superpower, depicted as a purple square, to tunnel across some cars and use it for your advantage against Talos.
