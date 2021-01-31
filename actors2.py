@@ -32,8 +32,6 @@ def duck():
 
 
 #ACTORS
-
-#general class for the game objects
 class Rectangle:
 
 	def __init__(self, x, y, w, h):
@@ -55,7 +53,7 @@ class Rectangle:
 
 		return not (left >= oright or right <= oleft or top >= obottom or bottom <= otop)
 
-#Class for every lane in the game
+
 class Lane(Rectangle):
 
 	def __init__(self, y, c=None, n=0, l=0, spc=0, spd=0):
@@ -76,7 +74,7 @@ class Lane(Rectangle):
 		for i in range(n):
 			self.obstacles.append(Obstacle(offset + spc * i, y * g_vars['grid'], l * g_vars['grid'], g_vars['grid'], spd, o_color, ready=0))
 
-#Class for the frog 
+
 class Frog(Rectangle):
 
 	def __init__(self, x, y, w, c):
@@ -88,7 +86,7 @@ class Frog(Rectangle):
 		self.qc = QuantumCircuit(2,2)  
 		self.state = '00'
 		self.powup = None
-#Reset the frog to the initial status and state
+
 	def reset(self):
 		print("Reset")
 		self.x = self.x0
@@ -97,7 +95,7 @@ class Frog(Rectangle):
 		self.qc = QuantumCircuit(2,2)
 		self.state = '00'
 		self.powup = None 
-#Move the frog
+
 	def move(self, xdir, ydir):
 		self.x += xdir * g_vars['grid']
 		self.y += ydir * g_vars['grid']
@@ -115,10 +113,10 @@ class Frog(Rectangle):
 	def tunnel(self):
 		self.x += self.xdir * g_vars['grid']
 		self.y += self.ydir * g_vars['grid']
-#Attach a frog to some obstacle in the lane
+
 	def attach(self, obstacle):
 		self.attached = obstacle
-#Movement for the obstacles, discrete movement
+
 	def update(self):
 		if self.attached is not None:
 			#Modificado para movimiento discreto            
@@ -165,16 +163,16 @@ class Frog(Rectangle):
 			self.qc.measure(1,1)
             
         #Call provider and set token value
-		provider = IonQProvider(token='95f4ff6Ka8BX0w4qPpkcZMX9q2PGyLt1')
+		#provider = IonQProvider(token='MyToken')
 		#qiskit_ionq_provider
-		backend = provider.get_backend("ionq_simulator")
+		#backend = provider.get_backend("ionq_simulator")
         # Then run the circuit:
-		job = backend.run(self.qc, shots=1)
+		#job = backend.run(self.qc, shots=1)
         #save job_id
-		job_id_bell = job.job_id()
+		#job_id_bell = job.job_id()
 
         # Fetch the result:
-		result = job.result()
+		#result = job.result()
         
 		#qpu_backend = provider.get_backend("ionq_qpu")
         # Then run the circuit:
@@ -186,8 +184,8 @@ class Frog(Rectangle):
         # Fetch the result:
 		#result = qpu_job_bell.result()
         
-		#backend = Aer.get_backend('qasm_simulator')
-		#result = execute(self.qc,backend=backend, shots=1).result()
+		backend = Aer.get_backend('qasm_simulator')
+		result = execute(self.qc,backend=backend, shots=1).result()
 		counts = result.get_counts()
 		self.state = max(counts, key=counts.get)
 		#else:
@@ -195,7 +193,7 @@ class Frog(Rectangle):
 		self.qc = QuantumCircuit(2,2)
 		self.powup = None
             
-#Class for the obstacles of the game
+
 class Obstacle(Rectangle):
 
 	def __init__(self, x, y, w, h, s, c, ready):
@@ -251,8 +249,6 @@ class Lane(Rectangle):
 		frog.attach(None)
 		for obstacle in self.obstacles:
             
-            
-#actions for the differenet obsatxcles in the game          
 			if frog.intersects(obstacle):
 				crash()
                 #Se estrella con carro o cae al agua
@@ -292,21 +288,13 @@ class Lane(Rectangle):
 					frog.update_circuit('tunnel')
                     
 		if not attached and self.type == 'log':
-			if frog.powup!=None:
-				if frog.powup=='superpos':
-					frog.measure_circuit('superpos')
-					if frog.state=='11' or frog.state=='01':
+			if frog.powup=='superpos':
+				frog.measure_circuit('superpos')
+				if frog.state=='11' or frog.state=='01':
                        #Se devuelve a donde estaba antes
-						print(frog.state)
-						frog.devolver()
-						frog.qc = QuantumCircuit(2,2)
-				elif frog.powup=='tunnel':
-					frog.measure_circuit('tunnel')
-					if frog.state=='11' or frog.state=='10':
-                        #Atraviesa el obstaculo
-						print(frog.state)
-						frog.tunnel()
-						frog.qc = QuantumCircuit(2,2)
+					print(frog.state)
+					frog.devolver()
+					frog.qc = QuantumCircuit(2,2)
 			else:
                #Se muere
 				frog.reset()
