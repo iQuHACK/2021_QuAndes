@@ -25,7 +25,7 @@ g_vars['window'] = pygame.display.set_mode( [g_vars['width'], g_vars['height']],
 matrix = np.array([[0,0,0], [0,0,0], [0,0,0]])
 
 class App:
-
+#intizializing the application
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("Frogger")
@@ -39,13 +39,16 @@ class App:
         self.movimiento = None
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont('Courier New', 16)
-
+        
+        
+#intizializing the game
     def init(self):
         self.running = True
         self.state = 'START'
         
-        #Juan Pablo Frog 2
+        #Player's frog 
         self.frog = Frog(g_vars['width']/2 - g_vars['grid']/2, 12 * g_vars['grid'], g_vars['grid'],(34, 177, 76))
+        #Bot's frog
         self.frog2 = Frog(g_vars['width']/2 - g_vars['grid']/2 - 3*g_vars['grid'], 12* g_vars['grid'], g_vars['grid'],(255, 0, 0))
         
         self.frog.attach(None)
@@ -71,6 +74,8 @@ class App:
         self.lanes.append( Lane( 11, t='car', c=(195, 195, 195), n=3, l=3, spc=200, spd=0.05) )
         self.lanes.append( Lane( 12, c=(50, 192, 122) ) )
 
+
+#Controls for the players frog
     def event(self, event):
         if event.type == QUIT:
             self.running = False
@@ -91,6 +96,8 @@ class App:
                 self.frog.move(0, -1)
             if event.type == KEYDOWN and event.key == K_DOWN:
                 self.frog.move(0, 1)
+                
+        '''
             #Juan Pablo Frog 2 event
             if event.type == KEYDOWN and event.key == ord('a'):
                 self.frog2.move(-1, 0)
@@ -100,6 +107,9 @@ class App:
                 self.frog2.move(0, -1)
             if event.type == KEYDOWN and event.key == ord('s'):
                 self.frog2.move(0, 1)
+        '''
+    
+#Controls for the bot's frog
     def event2(self, event):
         if self.state == 'PLAYING':
             if event=='left':
@@ -113,6 +123,9 @@ class App:
             if event=='none':
                 self.frog2.move(0,0)     
                 
+                
+                
+#Updating the state of the game for each movement              
     def update(self):
         for lane in self.lanes:
             lane.update()
@@ -155,6 +168,8 @@ class App:
             self.score.reset()
             self.state = 'START'
 
+            
+#Drawing the interface of the game
     def draw(self):
         g_vars['window'].fill( (0, 0, 0) )
         if self.state == 'START':
@@ -168,7 +183,7 @@ class App:
             self.draw_text("Score: {0}".format(self.score.score), 120, 8, 'left')
 
             self.draw_text("High Score: {0}".format(self.score.high_score), 240, 40, 'left')
-            self.draw_text("Score Talos: {0}".format(self.score2.score), 240, 8, 'rigth')
+            self.draw_text("Score Talos: {0}".format(self.score2.score), 240, 8, 'left')
 
 
             for lane in self.lanes:
@@ -190,7 +205,8 @@ class App:
     def cleanup(self):
         pygame.quit()
         quit()
-
+        
+#Method that describes the surroundings of the bot and creates a matrix according to it, this matrix will help the bot to choose the best path possible, it is the input to an implemeted qaoa
     def fillmatrix(self):
             #Fill 	
         global matrix
@@ -233,7 +249,7 @@ class App:
         matrix[2]=var1
         print(np.matrix(matrix))                   
           
-        
+#executing the game
     def execute(self):
         if self.init() == False:
             self.running = False
