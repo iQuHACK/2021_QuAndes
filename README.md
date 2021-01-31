@@ -1,5 +1,5 @@
 # Schrodinger's frog
-Rafael Felipe Córdoba, Luis Carlos Mantilla, Juan Pablo Acuña, Ana Torres, Daniel Sabogal 
+Rafael Felipe Córdoba, Luis Carlos Mantilla, Juan Pablo Acuña, Ana María Torres, Daniel Sabogal 
 
 <!---
 Having a README in your team's repository facilitates judging. A good README contains:
@@ -30,7 +30,7 @@ Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the mar
 
 ## Description
 
-## Elements and rules
+# Elements and rules
 * Map: This is the place where frogs and qubits coexist.  It contains cars that you must avoid at all costs!
 * Cars: They move to one side or the other discretely and are shown as dark grey pixels.
 * Frog: Represented by a dark green square, the frog you control can jump between the multiple highways and must reach the top of the map. 
