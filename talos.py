@@ -14,6 +14,31 @@ qaoa = MinimumEigenOptimizer(QAOA(quantum_instance=BasicAer.get_backend('qasm_si
 exact = MinimumEigenOptimizer(NumPyMinimumEigensolver())
 
 class QAOA_BOT:
+    """
+    This class represents the Bot Talos that controls the red frog.
+    Attributes:
+        direcciones: list
+        It is the direction of cars per lane. E.g. ['left', 'right', 'none'] would specify that
+        the red frog is on the road with vehicles moving to the right, above cars are moving to 
+        the left and under there is bare grass.
+        
+        vision:  3x3 np.array
+        These are the neighbouring blocks against the red frog, the middle of such array has value
+        2. e.g. np.array([[1,1,0], [0,2,1],[0,0,0]]) would mean that above to the left of the frog
+        there is a car. Also, there is a car to the right of the frog and nothing under it.
+        
+        malos: dict
+        dictionary with rewards for bad movement.
+
+        buenos: dict
+        dictionary with rewards for good movements.
+
+        Methods:
+        movimiento()
+        Outputs the movement that the bot takes.
+    
+    """
+    
     def __init__(self, direcciones, vision):
         self.direcciones = direcciones
         self.vision = vision
@@ -76,38 +101,38 @@ class QAOA_BOT:
         funMin = 0
 
         #fila 1:
-        if filas[0]=='right':
-            funMin += self.carro_moviendo_derecha(*cuadricula[0,:], buenos[0], malos[0])*up
+        if self.direcciones[0]=='right':
+            funMin += self.carro_moviendo_derecha(*self.vision[0,:], self.buenos[0], self.malos[0])*up
 
-        elif filas[0]=='left':
-            funMin += self.carro_moviendo_izquierda(*cuadricula[0,:], buenos[0], malos[0])*up
+        elif self.direcciones[0]=='left':
+            funMin += self.carro_moviendo_izquierda(*self.vision[0,:], self.buenos[0], self.malos[0])*up
 
-        elif filas[0]=='none':
-            funMin += self.carro_nada(*cuadricula[0,:], buenos[0], malos[0])*up
+        elif self.direcciones[0]=='none':
+            funMin += self.carro_nada(*self.vision[0,:], self.buenos[0], self.malos[0])*up
 
-        if filas[1]=='right':
-            funMin += self.carro_derecha_lados(*cuadricula[1,:], buenos[2], malos[2],2)*left
-            funMin += self.carro_derecha_lados(*cuadricula[1,:], buenos[3], malos[3],3)*right
-            funMin += self.carro_moviendo_derecha(*cuadricula[1,:], buenos[4], malos[4])*stay
+        if self.direcciones[1]=='right':
+            funMin += self.carro_derecha_lados(*self.vision[1,:], self.buenos[2], self.malos[2],2)*left
+            funMin += self.carro_derecha_lados(*self.vision[1,:], self.buenos[3], self.malos[3],3)*right
+            funMin += self.carro_moviendo_derecha(*self.vision[1,:], self.buenos[4], self.malos[4])*stay
 
-        elif filas[1]=='left':
-            funMin += self.carro_izquierda_lados(*cuadricula[1,:], buenos[2], malos[2],2)*left
-            funMin += self.carro_izquierda_lados(*cuadricula[1,:], buenos[3], malos[3],3)*right
-            funMin += self.carro_moviendo_izquierda(*cuadricula[1,:], buenos[4], malos[4])*stay
+        elif self.direcciones[1]=='left':
+            funMin += self.carro_izquierda_lados(*self.vision[1,:], self.buenos[2], self.malos[2],2)*left
+            funMin += self.carro_izquierda_lados(*self.vision[1,:], self.buenos[3], self.malos[3],3)*right
+            funMin += self.carro_moviendo_izquierda(*self.vision[1,:], self.buenos[4], self.malos[4])*stay
 
-        elif filas[1]=='none':
-            funMin += self.carro_nada_lados(*cuadricula[1,:], buenos[2], malos[2],2)*left
-            funMin += self.carro_nada_lados(*cuadricula[1,:], buenos[3], malos[3],3)*right
-            funMin += self.carro_nada(*cuadricula[1,:], buenos[4], malos[4])*stay
+        elif self.direcciones[1]=='none':
+            funMin += self.carro_nada_lados(*self.vision[1,:], self.buenos[2], self.malos[2],2)*left
+            funMin += self.carro_nada_lados(*self.vision[1,:], self.buenos[3], self.malos[3],3)*right
+            funMin += self.carro_nada(*self.vision[1,:], self.buenos[4], self.malos[4])*stay
 
-        if filas[2]=='right':
-            funMin += self.carro_moviendo_derecha(*cuadricula[2,:], buenos[1], malos[1])*down
+        if self.direcciones[2]=='right':
+            funMin += self.carro_moviendo_derecha(*self.vision[2,:], self.buenos[1], self.malos[1])*down
 
-        elif filas[2]=='left':
-            funMin += self.carro_moviendo_izquierda(*cuadricula[2,:], buenos[1], malos[1])*down
+        elif self.direcciones[2]=='left':
+            funMin += self.carro_moviendo_izquierda(*self.vision[2,:], self.buenos[1], self.malos[1])*down
 
-        elif filas[2]=='none':
-            funMin += self.carro_nada(*cuadricula[2,:], buenos[1], malos[1])*down
+        elif self.direcciones[2]=='none':
+            funMin += self.carro_nada(*self.vision[2,:], self.buenos[1], self.malos[1])*down
 
         mdl.minimize(-funMin)
         mdl.add_constraint(up+down+left+right+stay == 1, "cons1")

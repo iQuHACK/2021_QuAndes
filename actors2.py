@@ -2,8 +2,34 @@
 
 import random
 import pygame
+import numpy as np
+import time
+import qiskit
+from qiskit import *
 from pygame.locals import *
 from frogger2 import *
+
+from qiskit import Aer
+from qiskit_ionq_provider import IonQProvider 
+from qiskit.providers.jobstatus import JobStatus
+
+
+#SOUND
+pygame.init()
+crash_sound = pygame.mixer.Sound("crash.wav")
+def crash():
+    pygame.mixer.Sound.play(crash_sound)
+    pygame.mixer.music.stop()
+    
+tin_sound = pygame.mixer.Sound("tin.wav")
+def tin():
+    pygame.mixer.Sound.play(tin_sound)
+    pygame.mixer.music.stop()
+duck_sound = pygame.mixer.Sound("duck.wav")
+def duck():
+    pygame.mixer.Sound.play(duck_sound)
+    pygame.mixer.music.stop()
+
 
 #ACTORS
 class Rectangle:
@@ -40,27 +66,53 @@ class Lane(Rectangle):
             o_color = (128, 128, 128)
         if self.type == 'log':
             o_color = (185, 122, 87)
+        #Juan Pablo power up
+        if self.type== 'superpos':
+            o_color=(255,255,0)
+        if self.type== 'tunnel':
+            o_color=(148,0,211)
         for i in range(n):
             self.obstacles.append(Obstacle(offset + spc * i, y * g_vars['grid'], l * g_vars['grid'], g_vars['grid'], spd, o_color, ready=0))
 
 
 class Frog(Rectangle):
 
-    def __init__(self, x, y, w):
+    def __init__(self, x, y, w, c):
         super(Frog, self).__init__(x, y, w, w)
         self.x0 = x
         self.y0 = y
-        self.color = (34, 177, 76)
+        self.color = c
         self.attached = None
+        self.qc = QuantumCircuit(2,2)  
+        self.state = '00'
+        self.powup = None
 
     def reset(self):
+        print("Reset")
         self.x = self.x0
         self.y = self.y0
         self.attach(None)
+        self.qc = QuantumCircuit(2,2)
+        self.state = '00'
+        self.powup = None 
 
     def move(self, xdir, ydir):
         self.x += xdir * g_vars['grid']
         self.y += ydir * g_vars['grid']
+        # Daniel saves direction
+        self.xdir = xdir
+        self.ydir = ydir
+        # Daniel sound
+        duck()
+    #Daniel return
+    def devolver(self):
+        self.x -= self.xdir * g_vars['grid']
+        self.y -= self.ydir * g_vars['grid']
+        
+    #Daniel tunneling
+    def tunnel(self):
+        self.x += self.xdir * g_vars['grid']
+        self.y += self.ydir * g_vars['grid']
 
     def attach(self, obstacle):
         self.attached = obstacle
@@ -90,7 +142,57 @@ class Frog(Rectangle):
     def draw(self):
         rect = Rect( [self.x, self.y], [self.w, self.h] )
         pygame.draw.rect( g_vars['window'], self.color, rect )
+        
+    #Update circuit
+    def update_circuit(self, type):
+        if type == 'superpos' and self.powup!= 'superpos':
+            self.powup = 'superpos'         
+            self.qc.h(0)
+            tin()
+        elif type == 'tunnel' and self.powup!= 'tunnel':
+            self.powup = 'tunnel'
+            self.qc.h(1)
+            tin()
+        #self.qc.draw()
+            
+    #Measure circuit
+    def measure_circuit(self, type):
+        if type == 'superpos':
+            self.qc.measure(0,0)
+        elif type == 'tunnel':
+            self.qc.measure(1,1)
+            
+        #Call provider and set token value
+        provider = IonQProvider(token='95f4ff6Ka8BX0w4qPpkcZMX9q2PGyLt1')
+        #qiskit_ionq_provider
+        backend = provider.get_backend("ionq_simulator")
+        # Then run the circuit:
+        job = backend.run(self.qc, shots=1)
+        #save job_id
+        job_id_bell = job.job_id()
 
+        # Fetch the result:
+        result = job.result()
+        
+        #qpu_backend = provider.get_backend("ionq_qpu")
+        # Then run the circuit:
+        #qpu_job_bell = qpu_backend.run(self.qc)
+        #Store job id
+        #job_id_bell = qpu_job_bell.job_id()
+        #if qpu_job_bell.status() is JobStatus.DONE:
+        #	print("Job status is DONE")
+        # Fetch the result:
+        #result = qpu_job_bell.result()
+        
+        #backend = Aer.get_backend('qasm_simulator')
+        #result = execute(self.qc,backend=backend, shots=1).result()
+        counts = result.get_counts()
+        self.state = max(counts, key=counts.get)
+        #else:
+        #	print("Job status is ", qpu_job_bell.status() )
+        self.qc = QuantumCircuit(2,2)
+        self.powup = None
+            
 
 class Obstacle(Rectangle):
 
@@ -131,28 +233,80 @@ class Lane(Rectangle):
             o_color = (128, 128, 128)
         if self.type == 'log':
             o_color = (185, 122, 87)
+        #Juan Pablo power up
+        if self.type== 'superpos':
+            o_color=(255,255,0)
+        if self.type== 'tunnel':
+            o_color=(148,0,211)
         for i in range(n):
             #Modificado para movimiento discreto
             self.obstacles.append(Obstacle(offset + spc * i, y * g_vars['grid'], l * g_vars['grid'], g_vars['grid'], spd, o_color, ready=0))
-   
+
     def check(self, frog):
         checked = False
         attached = False
         frog.attach(None)
         for obstacle in self.obstacles:
+            
             if frog.intersects(obstacle):
+                crash()
+                #Se estrella con carro o cae al agua
                 if self.type == 'car':
-                    frog.reset()
-                    checked = True
+                    if frog.powup!=None:
+                        print("Estrella carro. powup: "+frog.powup)                   #PRINTTT
+                        if frog.powup=='superpos':
+                            frog.measure_circuit('superpos')
+                            print("Estado antes de verificar "+frog.state)
+                            if frog.state=='11' or frog.state=='01':
+                                #Se devuelve a donde estaba antes
+                                print("Estrella carro. Se devuelve estado: "+frog.state)           #PRINTTT
+                                frog.devolver()
+                                frog.qc = QuantumCircuit(2,2)
+                        elif frog.powup=='tunnel':
+                            frog.measure_circuit('tunnel')
+                            if frog.state=='11' or frog.state=='01':
+                                #Atraviesa el obstaculo
+                                print(frog.state)
+                                frog.tunnel()
+                                frog.qc = QuantumCircuit(2,2)
+                    else:
+                    #Se muere
+                        frog.reset()
+                        checked = True
+                            
                 if self.type == 'log':
                     attached = True
                     frog.attach(obstacle)
+                    
+                #Puertas cuánticas
+                if self.type == 'superpos':
+                    print("Coje la puerta "+self.type)           #PRINTT
+                    frog.update_circuit('superpos')
+                    frog.qc.draw()                              #PRINTTT
+                if self.type == 'tunnel':
+                    frog.update_circuit('tunnel')
+                    
         if not attached and self.type == 'log':
-            frog.reset()
-            checked = True
-        else:
-            a=1
-        
+            if frog.powup!=None:
+                if frog.powup=='superpos':
+                    frog.measure_circuit('superpos')
+                    if frog.state=='11' or frog.state=='01':
+                       #Se devuelve a donde estaba antes
+                        print(frog.state)
+                        frog.devolver()
+                        frog.qc = QuantumCircuit(2,2)
+                elif frog.powup=='tunnel':
+                    frog.measure_circuit('tunnel')
+                    if frog.state=='11' or frog.state=='10':
+                        #Atraviesa el obstaculo
+                        print(frog.state)
+                        frog.tunnel()
+                        frog.qc = QuantumCircuit(2,2)
+            else:
+               #Se muere
+                frog.reset()
+                checked = True
+
         return checked
 
     def update(self):
