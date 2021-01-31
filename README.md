@@ -43,5 +43,5 @@ Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the mar
 ## References
 ___
 * Farhi, E., Goldstone, J., & Gutmann, S. (2014). A quantum approximate optimization algorithm. arXiv preprint arXiv:1411.4028.
-* Lima, R. (2017). Frogger. GitHub repository.
+* Lima, R. (2017). Frogger. GitHub repository. https://github.com/rhrlima/frogger
 
