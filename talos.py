@@ -14,7 +14,7 @@ qaoa = MinimumEigenOptimizer(QAOA(quantum_instance=BasicAer.get_backend('qasm_si
 exact = MinimumEigenOptimizer(NumPyMinimumEigensolver())
 
 class QAOA_BOT:
-    """"
+    """
     This class represents the Bot Talos that controls the red frog.
     Attributes:
         direcciones: list
@@ -37,7 +37,7 @@ class QAOA_BOT:
         movimiento()
         Outputs the movement that the bot takes.
     
-    """"
+    """
     def __init__(self, direcciones, vision):
         self.direcciones = direcciones
         self.vision = vision
