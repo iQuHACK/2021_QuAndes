@@ -52,7 +52,7 @@ The quantum enhancement of the jumper frog stands on the fascinating |+> state. 
 * We want to improve the user interaction—for example, adding Talos as an optional bot and allowing different difficulties. 
 * Find better cost functions that improve the skills of Talos.
 * Change graphical aspects of the game, such as adding an image to the frogs and the quantum powers.
-
+* Due to our inexpertise, we were only able to implement the QAOA circuit of Talos on the qasm_simulator. We would love to implement this circuit on the IonQ backend in the future (we could implement the superpowers on both Ionq and Qasm backends).
 
 
 ## References
