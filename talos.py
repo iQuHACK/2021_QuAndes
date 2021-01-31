@@ -21,7 +21,7 @@ class QAOA_BOT:
         self.buenos = dict([(0,10), (1,1), (2,2), (3,2), (4,2)]) 
         
     #Carros moviendose hacia la izquierda <==
-    def carro_moviendo_izquierda(x1,x2,x3, bien, mal):
+    def carro_moviendo_izquierda(self,x1,x2,x3, bien, mal):
         if x2!=2:
             recomp = bien*(x3==0 and x2 ==0) + mal*(x2==1) + mal*(x3==1) + 1
         else:
@@ -29,17 +29,17 @@ class QAOA_BOT:
         return recomp
 
     #Carros moviendose hacia la derecha ==>
-    def carro_moviendo_derecha(x1,x2,x3, bien, mal):
+    def carro_moviendo_derecha(self,x1,x2,x3, bien, mal):
         if x2!=2:
             recomp = bien*(x1==0 and x2==0) + mal*(x1==1) + mal*(x2==1)  + 1
         else:
             recomp= mal*(x1==1) + 1
         return recomp
 
-    def carro_nada(x1,x2,x3, bien, mal):
+    def carro_nada(self,x1,x2,x3, bien, mal):
         return bien
 
-    def carro_izquierda_lados(x1,x2,x3,bien ,mal, lado):
+    def carro_izquierda_lados(self,x1,x2,x3,bien ,mal, lado):
         #right derecha
         if lado==3:   
             recomp = bien*(x1==1) + mal*(x3==1)
@@ -49,14 +49,14 @@ class QAOA_BOT:
             recomp = bien*(x3==1) + mal*(x1==1)
         return recomp
 
-    def carro_derecha_lados(x1,x2,x3,bien ,mal, lado):
+    def carro_derecha_lados(self,x1,x2,x3,bien ,mal, lado):
         if lado==3:   
             recomp = bien*(x1==1) + mal*(x3==1)
         if lado==2:
             recomp = bien*(x3==1) + mal*(x1==1)
         return recomp
 
-    def carro_nada_lados(x1,x2,x3, bien ,mal, lado):
+    def carro_nada_lados(self,x1,x2,x3, bien ,mal, lado):
         if lado==3:   
             recomp = bien
         if lado==2:
@@ -115,4 +115,5 @@ class QAOA_BOT:
         qp.from_docplex(mdl)
         qaoa_result = qaoa.solve(qp)
         return qaoa_result.variables_dict
+
 
