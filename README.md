@@ -28,13 +28,16 @@ ____
 -->
 -->
 ## Introduction
-___
 Crossy Road, Jumper Frog, and Crossy (Q)Duck are all different names for the marvellous game consisting of crossing a road without bumping into obstacles. We have implemented an improved version of the game on which frogs can explore the quantum realm and experience quantum effects such as superposition and tunnelling. Additionally, we have included a primitive AI bot that can play against the user. It decides its moves by minimizing a cost function that depends on its environment using the QAOA algorithm.   
 
 ## Elements and rules
-___
+* Map: This is the place where frogs and qubits coexist.  It contains cars that you must avoid at all costs!
+* Cars: They move to one side or the other discretely and are shown as dark grey pixels.
+* Frog: Represented by a dark green square, the frog you control can jump between the multiple highways and must reach the top of the map. 
+* Talos: In honour of the Greek myth of Talos, this is the name of your opponent. It is the red square (a venenous frog) that is competing against you for victory. It moves according to its neighbouring pixels.
+* Tunnelling superpower: You can use this superpower, depicted as a purple square, to tunnel across some cars and use it for your advantage against Talos.
+* Superposition superpower: Every quantum game must have a reference to Schrodinger's cat. In this game, the frog can replace the cat and increase its chances of crashing into a car. Its state will become |+>, and upon smashing into a vehicle (measuring on the computational basis), the frog could still live.  
 
-*
 
 
 ## References
