@@ -250,7 +250,7 @@ class Lane(Rectangle):
 		for obstacle in self.obstacles:
             
 			if frog.intersects(obstacle):
-			crash()
+				crash()
                 #Se estrella con carro o cae al agua
 				if self.type == 'car':
 					if frog.powup!=None:
