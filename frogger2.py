@@ -12,7 +12,7 @@ import pygame
 from pygame.locals import *
 import numpy as np
 from actors2 import *
-
+from talos import *
 
 g_vars = {}
 g_vars['width'] = 416
@@ -32,6 +32,7 @@ class App:
         self.running = None
         self.state = None
         self.frog = None
+        self.frog2= None
         self.score = None
         self.lanes = None
 
@@ -80,6 +81,18 @@ class App:
                 self.frog.move(0, -1)
             if event.type == KEYDOWN and event.key == K_DOWN:
                 self.frog.move(0, 1)
+    def event2(self, event):
+        if self.state == 'PLAYING':
+            if event=='left':
+                self.frog2.move(-1, 0)
+            if event=='right':
+                self.frog2.move(1, 0)
+            if event=='up':
+                self.frog2.move(0, -1)
+            if event=='down':
+                self.frog2.move(0, 1)     
+            if event=='none':
+                self.frog2.move(0,0)      
     
     def update(self):
         for lane in self.lanes:
@@ -196,6 +209,8 @@ class App:
             self.draw()
             self.clock.tick(g_vars['fps'])
             self.fillmatrix()
+            self.bot=QAOA_BOT(['left','right',None],matrix)
+            self.movimiento=self.bot.movimiento()
         self.cleanup()
 
 
